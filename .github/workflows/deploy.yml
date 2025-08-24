@@ -100,6 +100,4 @@ jobs:
           working-directory: /
           comment: Deploy
           command: |
-            touch /tmp/ssm-send-command.log
-            
-            kubectl set image deployment.apps/k8s-demo-1 k8s-demo-1=ghcr.io/${{ env.OWNER_LC }}/k8s-demo-1:${{ needs.tag.outputs.tag_name }}
+            touch /tmp/ssm-send-command.log && kubectl set image deployment.apps/k8s-demo-1 k8s-demo-1=ghcr.io/${{ env.OWNER_LC }}/k8s-demo-1:${{ needs.tag.outputs.tag_name }}
