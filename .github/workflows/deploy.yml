@@ -73,7 +73,7 @@ jobs:
             ghcr.io/${{ env.OWNER_LC }}/${{ env.DOCKER_IMAGE_NAME }}:latest
   deploy:
     runs-on: ubuntu-latest
-    needs: [buildImageAndPush]
+    needs: [makeTagAndRelease, buildImageAndPush]
     env:
       DOCKER_IMAGE_NAME: ${{ needs.buildImageAndPush.outputs.DOCKER_IMAGE_NAME }}
       OWNER_LC: ${{ needs.buildImageAndPush.outputs.OWNER_LC }}
@@ -101,3 +101,5 @@ jobs:
           comment: Deploy
           command: |
             touch /tmp/ssm-send-command.log
+            
+            kubectl set image deployment.apps/k8s-demo-1 k8s-demo-1=ghcr.io/${{ env.OWNER_LC }}/k8s-demo-1:${{ needs.makeTagAndRelease.outputs.tag_name }}
